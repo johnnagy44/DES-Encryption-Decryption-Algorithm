@@ -1,14 +1,14 @@
 # Compiler settings
 CC = gcc
-CFLAGS = -O3 -Wall
+CFLAGS = -O3 -Wall -Iinc
 OUTPUT_BIN_DIR = bin
+SRC_DIR = src
 
 # Create output directory if not found
 $(shell mkdir -p $(OUTPUT_BIN_DIR))
 
-# Source files
-SRCS = main.c des.c feistel.c keygen.c permutation.c utils.c
-OBJS = $(SRCS:.c=.o)
+# Automatically detect all .c files inside src/
+SRCS = $(wildcard $(SRC_DIR)/*.c)
 
 # Targets
 all: des
@@ -25,7 +25,7 @@ run_decrypt:
 
 # Clean up
 clean:
-	rm -rf $(OUTPUT_BIN_DIR) *.o
+	rm -rf $(OUTPUT_BIN_DIR)
 
 # Help
 help:
@@ -33,7 +33,7 @@ help:
 	@echo "  all           - Build the DES executable"
 	@echo "  run_encrypt   - Run encryption using example files"
 	@echo "  run_decrypt   - Run decryption using example files"
-	@echo "  clean         - Remove binaries and object files"
+	@echo "  clean         - Remove binaries"
 	@echo "  help          - Show this help message"
 
 .PHONY: all run_encrypt run_decrypt clean help
