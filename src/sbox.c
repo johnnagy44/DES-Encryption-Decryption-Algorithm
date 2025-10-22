@@ -60,7 +60,6 @@ static const int S_BOX[8][4][16] = {
 uint32_t sbox_substitute(uint64_t input48) {
     uint32_t output32 = 0;
 
-    // Process 8 groups of 6 bits (one per S-box)
     for (int i = 0; i < 8; i++) {
         uint8_t sixBits = (input48 >> (42 - 6 * i)) & 0x3F; // extract 6 bits
         int row = ((sixBits & 0x20) >> 4) | (sixBits & 0x01); // bits 1 & 6
