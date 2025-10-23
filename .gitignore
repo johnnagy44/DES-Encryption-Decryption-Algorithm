@@ -1,2 +1,45 @@
-.txt
-.exe
+# Build artifacts
+*.o
+*.obj
+*.out
+*.exe
+*.a
+*.so
+*.dll
+
+# Binaries
+bin/
+
+# Logs and temporary files
+*.log
+*.tmp
+*~
+*.bak
+
+# OS / editor junk
+.DS_Store
+.vscode/
+.idea/
+
+# Ignore images (e.g., chart outputs)
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Ignore GDS layout files
+*.gds
+
+# Python junk
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter or IPython
+.ipynb_checkpoints/
+
+# Compiled CUDA outputs (if using nvcc)
+*.cu.o
+*.ptx
+*.cubin
