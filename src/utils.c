@@ -63,3 +63,9 @@ void write_block(FILE *file, uint64_t block)
     }
     fwrite(buf, 1, 8, file);
 }
+
+void write_block_hex(FILE *file, uint64_t block)
+{
+    // Convert the 64-bit block into a 16-character hexadecimal string
+    fprintf(file, "%016lX", block);
+}

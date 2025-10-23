@@ -105,5 +105,6 @@ uint64_t read_block(FILE *file);
  * @param block  The 64-bit block to write.
  */
 void write_block(FILE *file, uint64_t block);
+void write_block_hex(FILE *file, uint64_t block);
 
 #endif // UTILS_H
