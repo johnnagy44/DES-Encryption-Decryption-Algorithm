@@ -25,7 +25,7 @@ int main(int argc, char **argv)
         if (mod == 'e')
             result = DES_encrypt(block, key_value);
         else if (mod == 'd')
-            result = DES_decrypt(result, key_value);
+            result = DES_decrypt(block, key_value);
         write_block(out, result);
         //write_block_hex(out, result);
     }
