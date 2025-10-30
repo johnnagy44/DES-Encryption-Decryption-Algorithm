@@ -1,19 +1,21 @@
 #include <stdio.h>
 #include <stdint.h>
 
-typedef enum {
-    PERM_PC1,      /* Permuted Choice 1: 64-bit key → 56-bit key */
-    PERM_PC2,      /* Permuted Choice 2: 56-bit key → 48-bit subkey */
-    PERM_IP,       /* Initial Permutation: plaintext → permuted block */
-    PERM_IP_INV,   /* Inverse Initial Permutation */
-    PERM_E,        /* Expansion Permutation: 32-bit R → 48-bit */
-    PERM_P         /* P-box Permutation: 32-bit → 32-bit */
+typedef enum
+{
+    PERM_PC1,    /* Permuted Choice 1: 64-bit key → 56-bit key */
+    PERM_PC2,    /* Permuted Choice 2: 56-bit key → 48-bit subkey */
+    PERM_IP,     /* Initial Permutation: plaintext → permuted block */
+    PERM_IP_INV, /* Inverse Initial Permutation */
+    PERM_E,      /* Expansion Permutation: 32-bit R → 48-bit */
+    PERM_P       /* P-box Permutation: 32-bit → 32-bit */
 } PermutationType;
 
-typedef struct {
-    const int *table;     /* Pointer to the permutation lookup table */
-    int size;             /* Number of output bits */
-    int input_bits;       /* Number of input bits */
+typedef struct
+{
+    const int *table; /* Pointer to the permutation lookup table */
+    int size;         /* Number of output bits */
+    int input_bits;   /* Number of input bits */
 } PermutationInfo;
 
 uint64_t subKeys[16] = {0};
@@ -227,10 +229,8 @@ uint64_t permute(uint64_t input, PermutationType type)
 
 void write_block_hex(FILE *file, uint64_t block)
 {
-    // Convert the 64-bit block into a 16-character hexadecimal string
-    fprintf(file, "%016lX", block);
+    fprintf(file, "%016llX", (unsigned long long)block);
 }
-
 
 uint32_t sbox_substitute(uint64_t input48)
 {
@@ -257,7 +257,6 @@ uint32_t feistel(uint32_t right, uint64_t key)
     output = (uint32_t)permute((uint64_t)output, PERM_P);
     return output;
 }
-
 
 uint64_t rotateLeft(uint64_t value, int shift, int bitCount)
 {
@@ -331,7 +330,6 @@ uint64_t DES_decrypt(uint64_t ciphertext, uint64_t key)
     left = get_left_half(plaintext, 64);
     right = get_right_half(plaintext, 64);
 
-    // swap_halves(&left, &right);
     plaintext = merge_halves(right, left, 32);
     plaintext = permute(plaintext, PERM_IP_INV);
 
@@ -340,13 +338,10 @@ uint64_t DES_decrypt(uint64_t ciphertext, uint64_t key)
 
 int main(int argc, char **argv)
 {
-    // to be edited
     char mod = argv[1][0];
-    printf("%c\n", mod);
     char *key_file = argv[2];
     char *input_file = argv[3];
     char *output_file = argv[4];
-
     FILE *key = fopen(key_file, "rb");
     FILE *in = fopen(input_file, "rb");
     FILE *out = fopen(output_file, "wb");
@@ -359,11 +354,14 @@ int main(int argc, char **argv)
             break;
 
         uint64_t result;
+
         if (mod == 'e')
             result = DES_encrypt(block, key_value);
         else if (mod == 'd')
             result = DES_decrypt(block, key_value);
+
         write_block(out, result);
+        // uncomment to write the file in hex format
         // write_block_hex(out, result);
     }
 
